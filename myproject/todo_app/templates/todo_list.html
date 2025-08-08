@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>My_Project</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <h1>Enter the details</h1>
+
+    <form action="{% url 'add_todo' %}" method="post">
+        {% csrf_token %}
+        <input type="text" name="task" placeholder="Enter task" required>
+        <input type="datetime-local" name="created_at" required>
+        <input type="datetime-local" name="completed_at" required>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h2>Todo List</h2>
+    <ul>
+        {% for i in items %}
+            <li>
+                <strong>{{ i.task }}</strong>
+                Created: {{ i.created_at }} |
+                Completed: {{ i.completed_at }}
+                <a href="{% url 'edit' i.id %}">Edit</a> |
+                <a href="{% url 'delete' i.id %}">Delete</a>
+            </li>
+        {% empty %}
+            <li>No tasks yet.</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
